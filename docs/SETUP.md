@@ -78,11 +78,11 @@ This gives the app permission to read and write your spreadsheet without a user 
    - Application type: **Web application**
    - Name: `Vantage`
    - Authorised redirect URIs — add ALL of these:
-     ```
-     http://localhost:3000/api/auth/callback/google
-     https://your-vercel-app.vercel.app/api/auth/callback/google
-     https://your-custom-domain.com/api/auth/callback/google
-     ```
+   ```
+   https://vantage-three-wine.vercel.app/api/auth/callback/google
+   https://your-vercel-app.vercel.app/api/auth/callback/google
+   https://your-custom-domain.com/api/auth/callback/google
+   ```
      (Add the localhost one now; add the production URLs after deployment)
 4. Click **Create** → copy the Client ID and Client Secret into `.env.local`:
    ```
@@ -164,7 +164,7 @@ Your finished `.env.local` should look like this:
 AUTH_SECRET=your-generated-secret
 AUTH_GOOGLE_ID=your-client-id.apps.googleusercontent.com
 AUTH_GOOGLE_SECRET=your-client-secret
-AUTH_URL=http://localhost:3000
+AUTH_URL=https://vantage-three-wine.vercel.app/
 
 # Shared password (optional)
 SHARED_ACCESS_PASSWORD=your-team-password
@@ -189,7 +189,7 @@ ADMIN_EMAILS=you@gmail.com
 npm run dev
 ```
 
-Visit `http://localhost:3000`. You will be redirected to the login page.
+Visit `https://vantage-three-wine.vercel.app/`. You will be redirected to the login page.
 
 Sign in with your Google account (it must match an email in `ADMIN_EMAILS`).
 
@@ -225,7 +225,7 @@ On first load, the app calls `initializeSpreadsheet()` which creates all missing
 
 ### Sign-in with Google fails / redirect_uri_mismatch
 **Cause:** The callback URL was not added to the OAuth app.
-**Fix:** Add `http://localhost:3000/api/auth/callback/google` to Authorised redirect URIs in Google Cloud Console (Step 3).
+**Fix:** Add `https://vantage-three-wine.vercel.app/api/auth/callback/google` to Authorised redirect URIs in Google Cloud Console (Step 3).
 
 ### Sign in succeeds but shows "Access denied"
 **Cause:** Your Google email is not in `ADMIN_EMAILS` and not in the AuthorizedUsers sheet.
