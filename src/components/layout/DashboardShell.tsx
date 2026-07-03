@@ -33,6 +33,53 @@ interface Props {
 
 export default function DashboardShell({ settings, title, subtitle, children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
+
+  const toggleFullscreen = useCallback(async () => {
+    if (typeof document === 'undefined') return
+
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen()
+      } else {
+        await document.documentElement.requestFullscreen()
+      }
+    } catch {
+      // Ignore user cancellation or unsupported fullscreen APIs.
+    }
+  }, [])
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement))
+    }
+
+    const onDoubleClick = () => {
+      toggleFullscreen()
+    }
+
+    let lastTap = 0
+    const onTouchEnd = (event: TouchEvent) => {
+      const now = Date.now()
+      if (now - lastTap <= 300) {
+        toggleFullscreen()
+        lastTap = 0
+        event.preventDefault()
+      } else {
+        lastTap = now
+      }
+    }
+
+    document.addEventListener('fullscreenchange', onFullscreenChange)
+    document.addEventListener('dblclick', onDoubleClick)
+    document.addEventListener('touchend', onTouchEnd)
+
+    return () => {
+      document.removeEventListener('fullscreenchange', onFullscreenChange)
+      document.removeEventListener('dblclick', onDoubleClick)
+      document.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [toggleFullscreen])
 
   // Close sidebar on Escape key
   useEffect(() => {
@@ -99,6 +146,8 @@ export default function DashboardShell({ settings, title, subtitle, children }: 
           subtitle={subtitle}
           onMenuClick={toggleSidebar}
           sidebarOpen={sidebarOpen}
+          isFullscreen={isFullscreen}
+          onToggleFullscreen={toggleFullscreen}
         />
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           {children}

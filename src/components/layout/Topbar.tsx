@@ -2,17 +2,19 @@
 
 import { signOut } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
-import { LogOut, Bell, Menu, X } from 'lucide-react'
+import { LogOut, Bell, Menu, X, Maximize2, Minimize2 } from 'lucide-react'
 import { useState } from 'react'
 
 interface TopbarProps {
-  title:        string
-  subtitle?:    string
-  onMenuClick:  () => void
-  sidebarOpen:  boolean
+  title:              string
+  subtitle?:          string
+  onMenuClick:        () => void
+  sidebarOpen:        boolean
+  isFullscreen:       boolean
+  onToggleFullscreen: () => void
 }
 
-export default function Topbar({ title, subtitle, onMenuClick, sidebarOpen }: TopbarProps) {
+export default function Topbar({ title, subtitle, onMenuClick, sidebarOpen, isFullscreen, onToggleFullscreen }: TopbarProps) {
   const { data: session } = useSession()
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -69,6 +71,16 @@ export default function Topbar({ title, subtitle, onMenuClick, sidebarOpen }: To
             style={{ background: 'var(--accent-clr)' }} />
           Live
         </div>
+
+        {/* Fullscreen toggle */}
+        <button
+          onClick={onToggleFullscreen}
+          className="w-8 h-8 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70"
+          style={{ background: 'var(--muted)', color: 'var(--muted-fg)' }}
+          aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+        >
+          {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+        </button>
 
         {/* Bell */}
         <button
