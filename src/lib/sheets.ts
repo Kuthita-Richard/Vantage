@@ -38,6 +38,37 @@ function getSheetsClient() {
 
 const SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID!
 
+function quoteSheetName(sheetName: string) {
+  return `'${sheetName.replace(/'/g, "''")}'`
+}
+
+async function ensureSheetExists(sheetName: string) {
+  const sheets = getSheetsClient()
+  const spreadsheet = await sheets.spreadsheets.get({
+    spreadsheetId: SPREADSHEET_ID,
+    includeGridData: false,
+  })
+  const exists = spreadsheet.data.sheets?.some(
+    (sheet) => sheet.properties?.title === sheetName
+  )
+  if (exists) return
+
+  await sheets.spreadsheets.batchUpdate({
+    spreadsheetId: SPREADSHEET_ID,
+    requestBody: {
+      requests: [
+        {
+          addSheet: {
+            properties: {
+              title: sheetName,
+            },
+          },
+        },
+      ],
+    },
+  })
+}
+
 // ── Sheet names ───────────────────────────────────────────────
 const SHEETS = {
   SALES: 'SalesData',
@@ -72,7 +103,13 @@ async function getSheetValues(range: string): Promise<string[][]> {
         })
         return (res2.data.values as string[][]) ?? []
       } catch (_) {
-        // fallthrough to rethrow original
+        // if the quoted range still fails, try creating a missing sheet
+        await ensureSheetExists(m[1])
+        const res3 = await sheets.spreadsheets.values.get({
+          spreadsheetId: SPREADSHEET_ID,
+          range: quoted,
+        })
+        return (res3.data.values as string[][]) ?? []
       }
     }
     throw err
