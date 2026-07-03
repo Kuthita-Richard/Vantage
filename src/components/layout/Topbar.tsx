@@ -122,7 +122,7 @@ export default function Topbar({ title, subtitle, onMenuClick, sidebarOpen }: To
                   </span>
                 </div>
                 <button
-                  onClick={() => signOut({ callbackUrl: '/login' })}
+                  onClick={() => signOut({ callbackUrl: typeof window !== 'undefined' ? window.location.origin + '/login' : '/login' })}
                   className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-xs transition-opacity hover:opacity-70"
                   style={{ color: '#dc2626' }}
                 >
