@@ -38,10 +38,13 @@ function getSheetsClient() {
 
 const SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID!
 
+// Quote a sheet name for A1 notation, escaping any internal single quotes.
 function quoteSheetName(sheetName: string) {
   return `'${sheetName.replace(/'/g, "''")}'`
 }
 
+// Normalize a range like "Settings!A:B" or "'Settings'!A:B" into a quoted range.
+// Returns both the normalized range and the unquoted sheet name.
 function getQuotedRange(range: string): { quotedRange: string; sheetName: string } | null {
   const match = String(range).trim().match(/^\s*(?:'((?:[^']|'')*)'|([^'!][^!]*))!(.+)$/)
   if (!match) return null
@@ -49,6 +52,7 @@ function getQuotedRange(range: string): { quotedRange: string; sheetName: string
   return { quotedRange: `${quoteSheetName(sheetName)}!${match[3]}`, sheetName }
 }
 
+// Ensure the sheet exists in the workbook; create it if missing.
 async function ensureSheetExists(sheetName: string) {
   const sheets = getSheetsClient()
   const spreadsheet = await sheets.spreadsheets.get({
@@ -87,6 +91,8 @@ const SHEETS = {
 } as const
 
 // ── Helper: get sheet values ──────────────────────────────────
+// Read values from a sheet range. If the raw range parsing fails, retry with a
+// quoted sheet name and create the sheet if it does not exist yet.
 async function getSheetValues(range: string): Promise<string[][]> {
   const sheets = getSheetsClient()
   try {
@@ -105,6 +111,7 @@ async function getSheetValues(range: string): Promise<string[][]> {
         })
         return (res2.data.values as string[][]) ?? []
       } catch (_) {
+        // If the sheet is missing, create it and retry the quoted range.
         await ensureSheetExists(parsed.sheetName)
         const res3 = await sheets.spreadsheets.values.get({
           spreadsheetId: SPREADSHEET_ID,
@@ -118,6 +125,8 @@ async function getSheetValues(range: string): Promise<string[][]> {
 }
 
 // ── Helper: append rows ───────────────────────────────────────
+// Append one or more rows to the bottom of the target sheet.
+// Automatically creates the sheet if it does not already exist.
 async function appendRows(sheetName: string, rows: unknown[][]) {
   const sheets = getSheetsClient()
   await ensureSheetExists(sheetName)
@@ -130,6 +139,7 @@ async function appendRows(sheetName: string, rows: unknown[][]) {
 }
 
 // ── Helper: update a row by row index ─────────────────────────
+// Update a specific row within a sheet. If the sheet is missing, it will be created first.
 async function updateRow(sheetName: string, rowIndex: number, values: unknown[]) {
   const sheets = getSheetsClient()
   await ensureSheetExists(sheetName)
