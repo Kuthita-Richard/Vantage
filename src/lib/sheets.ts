@@ -51,11 +51,32 @@ const SHEETS = {
 // ── Helper: get sheet values ──────────────────────────────────
 async function getSheetValues(range: string): Promise<string[][]> {
   const sheets = getSheetsClient()
-  const res = await sheets.spreadsheets.values.get({
-    spreadsheetId: SPREADSHEET_ID,
-    range,
-  })
-  return (res.data.values as string[][]) ?? []
+  try {
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range,
+    })
+    return (res.data.values as string[][]) ?? []
+  } catch (err: any) {
+    // Retry with a quoted sheet name if the range includes an unquoted sheet
+    // e.g. Settings!A:B -> 'Settings'!A:B (handles spaces/special chars)
+    const m = String(range).match(/^([^!]+)!(.+)$/)
+    if (m) {
+      const sheetName = m[1].replace(/'/g, "''")
+      const rest = m[2]
+      const quoted = `'${sheetName}'!${rest}`
+      try {
+        const res2 = await sheets.spreadsheets.values.get({
+          spreadsheetId: SPREADSHEET_ID,
+          range: quoted,
+        })
+        return (res2.data.values as string[][]) ?? []
+      } catch (_) {
+        // fallthrough to rethrow original
+      }
+    }
+    throw err
+  }
 }
 
 // ── Helper: append rows ───────────────────────────────────────
