@@ -105,7 +105,11 @@ const FilterSelect = ({
     >
       <option value="All">{label}: All</option>
       {options.map(o => (
+<<<<<<< HEAD
         <option key={o} value={o} style={{ background: 'var(--card)', color: 'var(--fg)' }}>{o}</option>
+=======
+        <option key={o} value={o} className="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">{o}</option>
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
       ))}
     </select>
     <ChevronDown size={11} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"
@@ -233,16 +237,28 @@ export default function DashboardClient({
               color:       isConverted ? 'var(--primary)' : 'var(--muted-fg)',
             }}
           >
+<<<<<<< HEAD
             <optgroup label="── Your base currency ──" style={{ background: 'var(--card)' }}>
               {CURRENCIES.filter(c => c.code === baseCurrency).map(c => (
                 <option key={c.code} value={c.code} style={{ background: 'var(--card)' }}>
+=======
+            <optgroup label="── Your base currency ──">
+              {CURRENCIES.filter(c => c.code === baseCurrency).map(c => (
+                <option key={c.code} value={c.code} className="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
                   {c.flag} {c.code} — {c.name}
                 </option>
               ))}
             </optgroup>
+<<<<<<< HEAD
             <optgroup label="── Convert to ──" style={{ background: 'var(--card)' }}>
               {CURRENCIES.filter(c => c.code !== baseCurrency).map(c => (
                 <option key={c.code} value={c.code} style={{ background: 'var(--card)' }}>
+=======
+            <optgroup label="── Convert to ──">
+              {CURRENCIES.filter(c => c.code !== baseCurrency).map(c => (
+                <option key={c.code} value={c.code} className="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
                   {c.flag} {c.code} — {c.name}
                 </option>
               ))}

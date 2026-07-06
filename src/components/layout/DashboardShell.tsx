@@ -33,6 +33,7 @@ interface Props {
 
 export default function DashboardShell({ settings, title, subtitle, children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+<<<<<<< HEAD
   const [isFullscreen, setIsFullscreen] = useState(false)
 
   const toggleFullscreen = useCallback(async () => {
@@ -80,6 +81,8 @@ export default function DashboardShell({ settings, title, subtitle, children }: 
       document.removeEventListener('touchend', onTouchEnd)
     }
   }, [toggleFullscreen])
+=======
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
   // Close sidebar on Escape key
   useEffect(() => {
@@ -146,8 +149,11 @@ export default function DashboardShell({ settings, title, subtitle, children }: 
           subtitle={subtitle}
           onMenuClick={toggleSidebar}
           sidebarOpen={sidebarOpen}
+<<<<<<< HEAD
           isFullscreen={isFullscreen}
           onToggleFullscreen={toggleFullscreen}
+=======
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
         />
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           {children}

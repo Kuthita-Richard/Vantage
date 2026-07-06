@@ -43,7 +43,11 @@ export const authConfig: NextAuthConfig = {
      */
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn   = !!auth?.user
+<<<<<<< HEAD
       const isPublicPath = ['/login', '/api/auth'].some(p =>
+=======
+      const isPublicPath = ['/login', '/api/auth', '/manual'].some(p =>
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
         nextUrl.pathname.startsWith(p)
       )
 

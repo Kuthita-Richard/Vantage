@@ -96,7 +96,11 @@ export default function ReportSettings({ settings }: Props) {
             style={inputStyle}
           >
             {CURRENCIES.map(c => (
+<<<<<<< HEAD
               <option key={c.code} value={c.code} style={{ background: 'var(--card)' }}>
+=======
+              <option key={c.code} value={c.code} className="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
                 {c.flag} {c.code} — {c.name} ({c.symbol})
               </option>
             ))}

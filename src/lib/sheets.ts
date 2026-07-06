@@ -38,6 +38,7 @@ function getSheetsClient() {
 
 const SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID!
 
+<<<<<<< HEAD
 // Quote a sheet name for A1 notation, escaping any internal single quotes.
 function quoteSheetName(sheetName: string) {
   return `'${sheetName.replace(/'/g, "''")}'`
@@ -80,6 +81,8 @@ async function ensureSheetExists(sheetName: string) {
   })
 }
 
+=======
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 // ── Sheet names ───────────────────────────────────────────────
 const SHEETS = {
   SALES: 'SalesData',
@@ -90,6 +93,7 @@ const SHEETS = {
   USERS: 'AuthorizedUsers',
 } as const
 
+<<<<<<< HEAD
 // ── Helper: get sheet values ──────────────────────────────────
 // Read values from a sheet range. If the raw range parsing fails, retry with a
 // quoted sheet name and create the sheet if it does not exist yet.
@@ -130,6 +134,28 @@ async function getSheetValues(range: string): Promise<string[][]> {
 async function appendRows(sheetName: string, rows: unknown[][]) {
   const sheets = getSheetsClient()
   await ensureSheetExists(sheetName)
+=======
+const DEFAULT_METADATA: OrgMetadata = {
+  regions: ['North', 'South', 'East', 'West', 'Central'],
+  categories: ['Product A', 'Product B', 'Product C', 'Product D'],
+  salesReps: ['Alice Johnson', 'Bob Smith', 'Carol White', 'David Brown', 'Eve Davis'],
+  statuses: ['Active', 'Inactive'],
+}
+
+// ── Helper: get sheet values ──────────────────────────────────
+async function getSheetValues(range: string): Promise<string[][]> {
+  const sheets = getSheetsClient()
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range,
+  })
+  return (res.data.values as string[][]) ?? []
+}
+
+// ── Helper: append rows ───────────────────────────────────────
+async function appendRows(sheetName: string, rows: unknown[][]) {
+  const sheets = getSheetsClient()
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
   await sheets.spreadsheets.values.append({
     spreadsheetId: SPREADSHEET_ID,
     range: `${sheetName}!A1`,
@@ -139,10 +165,15 @@ async function appendRows(sheetName: string, rows: unknown[][]) {
 }
 
 // ── Helper: update a row by row index ─────────────────────────
+<<<<<<< HEAD
 // Update a specific row within a sheet. If the sheet is missing, it will be created first.
 async function updateRow(sheetName: string, rowIndex: number, values: unknown[]) {
   const sheets = getSheetsClient()
   await ensureSheetExists(sheetName)
+=======
+async function updateRow(sheetName: string, rowIndex: number, values: unknown[]) {
+  const sheets = getSheetsClient()
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
   await sheets.spreadsheets.values.update({
     spreadsheetId: SPREADSHEET_ID,
     range: `${sheetName}!A${rowIndex}`,
@@ -324,6 +355,7 @@ async function _getMetadata(): Promise<OrgMetadata> {
     const rows = await getSheetValues(`${SHEETS.METADATA}!A:D`)
     // Row 1 is header: Regions | Categories | SalesReps | Statuses
     const data = rows.slice(1)
+<<<<<<< HEAD
     return {
       regions:    data.map(r => r[0]).filter(Boolean),
       categories: data.map(r => r[1]).filter(Boolean),
@@ -334,6 +366,27 @@ async function _getMetadata(): Promise<OrgMetadata> {
     }
   } catch {
     return { regions: [], categories: [], salesReps: [], statuses: ['Active', 'Inactive'] }
+=======
+    const regions = data.map(r => r[0]).filter(Boolean)
+    const categories = data.map(r => r[1]).filter(Boolean)
+    const salesReps = data.map(r => r[2]).filter(Boolean)
+    const statuses = data.map(r => r[3]).filter(Boolean)
+
+    // Return defaults if all columns are empty (fresh/unseeded sheet)
+    if (!regions.length && !categories.length && !salesReps.length && !statuses.length) {
+      return DEFAULT_METADATA
+    }
+
+    // Fallback each column to defaults if empty
+    return {
+      regions:    regions.length ? regions : DEFAULT_METADATA.regions,
+      categories: categories.length ? categories : DEFAULT_METADATA.categories,
+      salesReps:  salesReps.length ? salesReps : DEFAULT_METADATA.salesReps,
+      statuses:   statuses.length ? statuses : DEFAULT_METADATA.statuses,
+    }
+  } catch {
+    return DEFAULT_METADATA
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
   }
 }
 

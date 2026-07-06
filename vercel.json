@@ -1,4 +1,7 @@
 {
+<<<<<<< HEAD
   "$schema": "https://openapi.vercel.sh/vercel.json",
+=======
+>>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
   "framework": "nextjs"
 }
