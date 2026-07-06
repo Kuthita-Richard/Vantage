@@ -172,18 +172,6 @@ export default function Sidebar({ settings, onNavigate }: Props) {
         })}
       </nav>
 
-<<<<<<< HEAD
-=======
-      {/* Manual link */}
-      <div className="px-4 pb-2 flex-shrink-0">
-        <a href="/manual" target="_blank" rel="noopener noreferrer"
-          className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-all hover:opacity-80"
-          style={{ color: 'rgba(147,197,253,0.65)' }}>
-          <span>📖</span> User Manual
-        </a>
-      </div>
-
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
       {/* User strip */}
       {session?.user && (
         <div className="p-3 flex-shrink-0"

@@ -1,7 +1,6 @@
 /**
  * POST /api/upload
  *
-<<<<<<< HEAD
  * Handles file uploads to Vercel Blob storage.
  * Used by Settings → Identity for logo and favicon uploads.
  *
@@ -14,20 +13,6 @@
 import { NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 import { auth } from '@/lib/auth'
-=======
- * Handles image uploads to Cloudinary (replaces Vercel Blob).
- * Works on any hosting provider — Vercel, Namecheap, VPS, Docker.
- *
- * Accepts: multipart/form-data with a 'file' field
- * Returns: { url: string } on success
- *
- * Auth: Admin role required (checked via session cookie)
- * Constraints: image types only, max 2MB (enforced before upload)
- */
-import { NextResponse } from 'next/server'
-import { auth }         from '@/lib/auth'
-import { uploadToCloudinary } from '@/lib/cloudinary'
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 export async function POST(request: Request) {
   const session = await auth()
@@ -37,39 +22,12 @@ export async function POST(request: Request) {
   }
 
   const formData = await request.formData()
-<<<<<<< HEAD
   const file     = formData.get('file') as File | null
-=======
-  const file     = formData.get('file')     as File   | null
-  const field    = formData.get('field')    as string | null
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
   if (!file) {
     return NextResponse.json({ error: 'No file provided' }, { status: 400 })
   }
 
-<<<<<<< HEAD
   const blob = await put(file.name, file, { access: 'public' })
   return NextResponse.json({ url: blob.url })
-=======
-  const allowedTypes = ['image/png', 'image/jpeg', 'image/svg+xml', 'image/webp', 'image/x-icon']
-  if (!allowedTypes.includes(file.type)) {
-    return NextResponse.json(
-      { error: 'File must be PNG, JPG, SVG, WEBP or ICO' },
-      { status: 400 }
-    )
-  }
-
-  if (file.size > 2 * 1024 * 1024) {
-    return NextResponse.json({ error: 'File must be under 2MB' }, { status: 400 })
-  }
-
-  try {
-    const result = await uploadToCloudinary(file, `branding/${field ?? 'misc'}`)
-    return NextResponse.json({ url: result.url })
-  } catch (e) {
-    const message = e instanceof Error ? e.message : 'Upload failed'
-    return NextResponse.json({ error: message }, { status: 500 })
-  }
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 }

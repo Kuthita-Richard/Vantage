@@ -51,11 +51,7 @@ After deploying, add your environment variables in the Vercel dashboard:
 | `GOOGLE_SPREADSHEET_ID` | Production, Preview, Development |
 | `ADMIN_EMAILS` | Production, Preview, Development |
 
-<<<<<<< HEAD
 > `BLOB_READ_WRITE_TOKEN` is set automatically when you create a Blob store in the Vercel dashboard.
-=======
-> `CLOUDINARY_CLOUD_NAME + API_KEY + API_SECRET` is set automatically when you create a Blob store in the Vercel dashboard.
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 ### Important: AUTH_URL in Production
 
@@ -88,22 +84,14 @@ After deployment, add your production URL to the Google OAuth app:
 
 ---
 
-<<<<<<< HEAD
 ## Create a Vercel Blob Store
-=======
-## Create a Cloudinary Store
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 Required for logo and favicon uploads.
 
 1. Vercel dashboard → your project → **Storage**
 2. Click **Create Database → Blob**
 3. Give it any name → Create
-<<<<<<< HEAD
 4. The `BLOB_READ_WRITE_TOKEN` is automatically added to your project's environment variables
-=======
-4. The `CLOUDINARY_CLOUD_NAME + API_KEY + API_SECRET` is automatically added to your project's environment variables
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 ---
 
@@ -159,11 +147,7 @@ COPY --from=builder /app/public ./public
 CMD ["node", "server.js"]
 ```
 
-<<<<<<< HEAD
 ### Replacing Vercel Blob
-=======
-### Replacing Cloudinary
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 If you leave Vercel, replace `@vercel/blob` with an S3-compatible store.
 The only file that needs changing is `src/actions/index.ts` —
@@ -172,11 +156,7 @@ specifically the `uploadLogoAction` function. Replace `put()` from
 any S3-compatible API (Cloudflare R2, Backblaze B2, MinIO).
 
 ```typescript
-<<<<<<< HEAD
 // Current (Vercel Blob)
-=======
-// Current (Cloudinary)
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 import { put } from '@vercel/blob'
 const blob = await put(filename, file, { access: 'public' })
 const url  = blob.url
@@ -195,11 +175,7 @@ const url = `https://your-bucket.s3.amazonaws.com/${filename}`
 - [ ] App loads at production URL
 - [ ] Google sign-in works (no redirect_uri_mismatch error)
 - [ ] `AUTH_URL` is set to the production URL
-<<<<<<< HEAD
 - [ ] `BLOB_READ_WRITE_TOKEN` is configured (logo upload works)
-=======
-- [ ] `CLOUDINARY_CLOUD_NAME + API_KEY + API_SECRET` is configured (logo upload works)
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 - [ ] Google Sheets service account has Editor access to the spreadsheet
 - [ ] Custom domain is resolving and SSL is active
 - [ ] Added production callback URL to Google OAuth app

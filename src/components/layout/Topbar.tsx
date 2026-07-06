@@ -2,7 +2,6 @@
 
 import { signOut } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
-<<<<<<< HEAD
 import { LogOut, Bell, Menu, X, Maximize2, Minimize2 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -16,19 +15,6 @@ interface TopbarProps {
 }
 
 export default function Topbar({ title, subtitle, onMenuClick, sidebarOpen, isFullscreen, onToggleFullscreen }: TopbarProps) {
-=======
-import { LogOut, Bell, Menu, X } from 'lucide-react'
-import { useState } from 'react'
-
-interface TopbarProps {
-  title:        string
-  subtitle?:    string
-  onMenuClick:  () => void
-  sidebarOpen:  boolean
-}
-
-export default function Topbar({ title, subtitle, onMenuClick, sidebarOpen }: TopbarProps) {
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
   const { data: session } = useSession()
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -86,7 +72,6 @@ export default function Topbar({ title, subtitle, onMenuClick, sidebarOpen }: To
           Live
         </div>
 
-<<<<<<< HEAD
         {/* Fullscreen toggle */}
         <button
           onClick={onToggleFullscreen}
@@ -97,8 +82,6 @@ export default function Topbar({ title, subtitle, onMenuClick, sidebarOpen }: To
           {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
         </button>
 
-=======
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
         {/* Bell */}
         <button
           className="w-8 h-8 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70"
@@ -151,11 +134,7 @@ export default function Topbar({ title, subtitle, onMenuClick, sidebarOpen }: To
                   </span>
                 </div>
                 <button
-<<<<<<< HEAD
                   onClick={() => signOut({ callbackUrl: typeof window !== 'undefined' ? window.location.origin + '/login' : '/login' })}
-=======
-                  onClick={() => signOut({ callbackUrl: '/login' })}
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
                   className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-xs transition-opacity hover:opacity-70"
                   style={{ color: '#dc2626' }}
                 >

@@ -13,11 +13,7 @@ import { salesEntrySchema, excelRowSchema, authorizedUserSchema } from '@/schema
 import type { SalesRecordInput, OrgSettings, UserRole } from '@/types'
 import { revalidatePath } from 'next/cache'
 import * as XLSX from 'xlsx'
-<<<<<<< HEAD
 import { put } from '@vercel/blob'
-=======
-import { uploadToCloudinary } from '@/lib/cloudinary'
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 import { safeParseNumber } from '@/lib/utils'
 import { z } from 'zod'
 
@@ -184,7 +180,6 @@ export async function uploadLogoAction(
       return { success: false, message: 'File must be under 2MB' }
     }
 
-<<<<<<< HEAD
     const blob = await put(`branding/${field}-${Date.now()}.${file.name.split('.').pop()}`,
       file, { access: 'public' })
 
@@ -192,17 +187,6 @@ export async function uploadLogoAction(
     revalidatePath('/', 'layout')
 
     return { success: true, url: blob.url, message: 'Image uploaded successfully' }
-=======
-    const result = await uploadToCloudinary(
-      file,
-      `${field}-${Date.now()}`
-    )
-
-    await updateOrgSettings({ [field]: result.url })
-    revalidatePath('/', 'layout')
-
-    return { success: true, url: result.url, message: 'Image uploaded successfully' }
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
   } catch (e) {
     return { success: false, message: e instanceof Error ? e.message : 'Upload failed' }
   }

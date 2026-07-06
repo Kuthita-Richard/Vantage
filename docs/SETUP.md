@@ -11,11 +11,7 @@ You need four things:
 1. A **Google Sheet** (your data store)
 2. A **Google Cloud Service Account** (lets the app read/write your sheet)
 3. A **Google OAuth app** (lets users sign in with Google)
-<<<<<<< HEAD
 4. A **Vercel Blob store** (stores uploaded logos)
-=======
-4. A **Cloudinary store** (stores uploaded logos)
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 Everything else in `.env.local` you create yourself.
 
@@ -82,19 +78,11 @@ This gives the app permission to read and write your spreadsheet without a user 
    - Application type: **Web application**
    - Name: `Vantage`
    - Authorised redirect URIs — add ALL of these:
-<<<<<<< HEAD
    ```
    https://vantage-three-wine.vercel.app/api/auth/callback/google
    https://your-vercel-app.vercel.app/api/auth/callback/google
    https://your-custom-domain.com/api/auth/callback/google
    ```
-=======
-     ```
-     http://localhost:3000/api/auth/callback/google
-     https://your-vercel-app.vercel.app/api/auth/callback/google
-     https://your-custom-domain.com/api/auth/callback/google
-     ```
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
      (Add the localhost one now; add the production URLs after deployment)
 4. Click **Create** → copy the Client ID and Client Secret into `.env.local`:
    ```
@@ -151,15 +139,9 @@ Leave this blank to disable credential-based login.
 
 ---
 
-<<<<<<< HEAD
 ## Step 7 — Set Up Vercel Blob (for logo uploads)
 
 Vercel Blob stores uploaded logo and favicon images.
-=======
-## Step 7 — Set Up Cloudinary (for logo uploads)
-
-Cloudinary stores uploaded logo and favicon images.
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 **For local development:**
 1. Install the Vercel CLI: `npm i -g vercel`
@@ -167,11 +149,7 @@ Cloudinary stores uploaded logo and favicon images.
 3. Create a Blob store in the Vercel dashboard: **Storage → Create → Blob**
 4. Pull env vars locally: `vercel env pull .env.local`
 
-<<<<<<< HEAD
 This auto-adds `BLOB_READ_WRITE_TOKEN` to your `.env.local`.
-=======
-This auto-adds `CLOUDINARY_CLOUD_NAME + API_KEY + API_SECRET` to your `.env.local`.
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 **If you skip this for now:** logo upload will fail with an error, but everything else works. You can add it later.
 
@@ -186,11 +164,7 @@ Your finished `.env.local` should look like this:
 AUTH_SECRET=your-generated-secret
 AUTH_GOOGLE_ID=your-client-id.apps.googleusercontent.com
 AUTH_GOOGLE_SECRET=your-client-secret
-<<<<<<< HEAD
 AUTH_URL=https://vantage-three-wine.vercel.app/
-=======
-AUTH_URL=http://localhost:3000
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 # Shared password (optional)
 SHARED_ACCESS_PASSWORD=your-team-password
@@ -200,13 +174,8 @@ GOOGLE_SHEETS_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KE
 GOOGLE_SHEETS_CLIENT_EMAIL=vantage-sheets@your-project.iam.gserviceaccount.com
 GOOGLE_SPREADSHEET_ID=your-spreadsheet-id
 
-<<<<<<< HEAD
 # Vercel Blob
 BLOB_READ_WRITE_TOKEN=vercel_blob_rw_...
-=======
-# Cloudinary
-CLOUDINARY_CLOUD_NAME + API_KEY + API_SECRET=vercel_blob_rw_...
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 # Admins
 ADMIN_EMAILS=you@gmail.com
@@ -220,11 +189,7 @@ ADMIN_EMAILS=you@gmail.com
 npm run dev
 ```
 
-<<<<<<< HEAD
 Visit `https://vantage-three-wine.vercel.app/`. You will be redirected to the login page.
-=======
-Visit `http://localhost:3000`. You will be redirected to the login page.
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 Sign in with your Google account (it must match an email in `ADMIN_EMAILS`).
 
@@ -260,11 +225,7 @@ On first load, the app calls `initializeSpreadsheet()` which creates all missing
 
 ### Sign-in with Google fails / redirect_uri_mismatch
 **Cause:** The callback URL was not added to the OAuth app.
-<<<<<<< HEAD
 **Fix:** Add `https://vantage-three-wine.vercel.app/api/auth/callback/google` to Authorised redirect URIs in Google Cloud Console (Step 3).
-=======
-**Fix:** Add `http://localhost:3000/api/auth/callback/google` to Authorised redirect URIs in Google Cloud Console (Step 3).
->>>>>>> 739f7bc (fix: dropdown styling and metadata initialization)
 
 ### Sign in succeeds but shows "Access denied"
 **Cause:** Your Google email is not in `ADMIN_EMAILS` and not in the AuthorizedUsers sheet.
